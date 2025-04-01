@@ -22,6 +22,15 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true, // No es recomendable usarlo en producción
+      ssl: process.env.POSTGRES_SSL === "true",
+      extra: {
+        ssl:
+          process.env.POSTGRES_SSL === "true" // POSTGRES_SSL = false en local y true en producción
+            ? {
+              rejectUnauthorized: false,
+            }
+            : null,
+      },
     }),
     CatsModule,
     BreedsModule,
